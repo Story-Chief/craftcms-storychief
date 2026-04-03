@@ -227,14 +227,15 @@ class WebhookController extends Controller
     protected function handleTestEventType()
     {
         $storyChiefPlugin = Craft::$app->plugins->getPlugin('storychief-v3');
+        $currentSettings = $storyChiefPlugin->getSettings()->toArray();
         if (isset($this->payload['data']['custom_fields']['data'])) {
-            Craft::$app->plugins->savePluginSettings($storyChiefPlugin, [
+            Craft::$app->plugins->savePluginSettings($storyChiefPlugin, array_merge($currentSettings, [
                 'custom_field_definitions' => $this->payload['data']['custom_fields']['data'],
-            ]);
+            ]));
         } else {
-            Craft::$app->plugins->savePluginSettings($storyChiefPlugin, [
+            Craft::$app->plugins->savePluginSettings($storyChiefPlugin, array_merge($currentSettings, [
                 'custom_field_definitions' => [],
-            ]);
+            ]));
         }
 
         return '';
